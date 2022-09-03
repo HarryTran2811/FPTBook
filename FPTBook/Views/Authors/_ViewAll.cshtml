@@ -1,0 +1,62 @@
+﻿@model ReflectionIT.Mvc.Paging.PagingList<FPTBook.Models.Author>
+@using ReflectionIT.Mvc.Paging
+
+<h1>Manage author</h1>
+<p>Number of author: @Model.TotalRecordCount</p>
+<div class="d-flex" style="justify-content: space-between;">
+    <p>
+        <a onclick="showInPopup('@Url.Action("AddOrEdit","Authors",null,Context.Request.Scheme)','New Blog')" class="btn btn-success text-white"><i class="fa-solid fa-circle-plus"></i> Create new article</a>
+    </p>
+    <form method="get" class="form-inline">
+        <input name="filter" class="form-control" placeholder="Search"
+               value="@Model.RouteValue["Filter"]" />
+        <button type="submit" class="btn btn-info">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+        </button>
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.SortableHeaderFor(model => model.ProfilePictureURL, this.Model)
+            </th>
+            <th>
+                @Html.SortableHeaderFor(model => model.FullName, this.Model)
+            </th>
+            <th>
+                @Html.SortableHeaderFor(model => model.Bio, this.Model)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="align-middle">
+                    <img class="rounded-circle" src="@item.ProfilePictureURL" alt="@item.FullName" style="max-width: 150px" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                    <div style=" display: block; display: -webkit-box; height: 62.4px; font-size: 16px; line-height: 1.3; -webkit-line-clamp: 3; /* số dòng hiển thị */ -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; margin-top: 10px;"> @Html.Raw(item.Bio) </div>
+</td>
+                <td>
+                    <div class="d-flex">
+                        <a onclick="showInPopup('@Url.Action("AddOrEdit","Authors",new { id = item.Id},Context.Request.Scheme)','Update Author')" class="btn btn-info text-white" style="margin-right: 20px">Edit</a>
+                        <form asp-action="Delete" asp-route-id="@item.Id" onsubmit="return jQueryAjaxDelete(this);">
+                            <input type="hidden" asp-for="@item.Id" />
+                            <input type="submit" value="Delete" class="btn btn-danger" />
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<nav aria-label="Blog Paging">
+    @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
+</nav>

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FPTBook.Data;
 using FPTBook.Models;
+using ReflectionIT.Mvc.Paging;
+using Microsoft.AspNetCore.Routing;
 
 namespace FPTBook.Controllers
 {
@@ -20,9 +22,20 @@ namespace FPTBook.Controllers
         }
 
         // GET: Authors
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "FullName")
         {
-            return View(await _context.Authors.ToListAsync());
+            var query = _context.Authors.AsNoTracking()
+                .OrderBy(p => p.Id)
+                .AsQueryable();
+            if (!string.IsNullOrWhiteSpace(filter))
+            {
+                query = query.Where(p => p.FullName.Contains(filter));
+            }
+            var model = await PagingList.CreateAsync(query, 2, page, sortExpression, "FullName");
+            model.RouteValue = new RouteValueDictionary {
+            { "filter", filter}
+            };
+            return View(model);
         }
 
         // GET: Authors/Details/5
@@ -43,79 +56,60 @@ namespace FPTBook.Controllers
             return View(author);
         }
 
-        // GET: Authors/Create
-        public IActionResult Create()
+        // GET: Authors/Add
+        // GET:Authors/Edit/?id
+        public async Task<IActionResult> AddOrEdit(int id = 0)
         {
-            return View();
+            if (id == 0)
+                return View(new Author());
+            else
+            {
+                var author = await _context.Authors.FindAsync(id);
+                if (author == null)
+                {
+                    return NotFound();
+                }
+                return View(author);
+            }
         }
 
-        // POST: Authors/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Authors/Add
+        // POST:Authors/Edit/?id
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ProfilePictureURL,FullName,Bio")] Author author)
+        public async Task<IActionResult> AddOrEdit(int id, [Bind("Id,ProfilePictureURL,FullName,Bio")] Author author)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(author);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(author);
-        }
-
-        // GET: Authors/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var author = await _context.Authors.FindAsync(id);
-            if (author == null)
-            {
-                return NotFound();
-            }
-            return View(author);
-        }
-
-        // POST: Authors/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ProfilePictureURL,FullName,Bio")] Author author)
-        {
-            if (id != author.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                if (id == 0)
                 {
                     _context.Update(author);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!AuthorExists(author.Id))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(author);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!AuthorExists(author.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
                 }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(author);
-        }
 
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _context.Authors.ToList()) });
+            }
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "AddOrEdit", author) });
+        }
         // GET: Authors/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
