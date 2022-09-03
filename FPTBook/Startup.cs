@@ -1,9 +1,12 @@
+using FPTBook.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +27,17 @@ namespace FPTBook
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            // Add framework services.
+            services.AddMvc();
+            services.AddPaging(
+                options => {
+                    options.ViewName = "Bootstrap4";
+                    options.PageParameterName = "page";
+                }
+                );
+            //Connect SQL server
+            services.AddDbContext<AppDbContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
