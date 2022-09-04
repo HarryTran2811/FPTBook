@@ -31,7 +31,7 @@ namespace FPTBook.Controllers
             {
                 query = query.Where(p => p.FullName.Contains(filter));
             }
-            var model = await PagingList.CreateAsync(query, 2, page, sortExpression, "FullName");
+            var model = await PagingList.CreateAsync(query, 4, page, sortExpression, "FullName");
             model.RouteValue = new RouteValueDictionary {
             { "filter", filter}
             };
@@ -110,23 +110,6 @@ namespace FPTBook.Controllers
             }
             return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "AddOrEdit", author) });
         }
-        // GET: Authors/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var author = await _context.Authors
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (author == null)
-            {
-                return NotFound();
-            }
-
-            return View(author);
-        }
 
         // POST: Authors/Delete/5
         [HttpPost, ActionName("Delete")]
@@ -136,7 +119,7 @@ namespace FPTBook.Controllers
             var author = await _context.Authors.FindAsync(id);
             _context.Authors.Remove(author);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _context.Authors.ToList()) });
         }
 
         private bool AuthorExists(int id)

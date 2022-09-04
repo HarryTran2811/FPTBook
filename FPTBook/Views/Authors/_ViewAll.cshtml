@@ -3,7 +3,7 @@
 
 <h1>Manage author</h1>
 <p>Number of author: @Model.TotalRecordCount</p>
-<div class="d-flex" style="justify-content: space-between;">
+<div class="content-flex">
     <p>
         <a onclick="showInPopup('@Url.Action("AddOrEdit","Authors",null,Context.Request.Scheme)','New Blog')" class="btn btn-success text-white"><i class="fa-solid fa-circle-plus"></i> Create new article</a>
     </p>
@@ -42,10 +42,10 @@
                     @Html.DisplayFor(modelItem => item.FullName)
                 </td>
                 <td>
-                    <div style=" display: block; display: -webkit-box; height: 62.4px; font-size: 16px; line-height: 1.3; -webkit-line-clamp: 3; /* số dòng hiển thị */ -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; margin-top: 10px;"> @Html.Raw(item.Bio) </div>
+                    <div class ="item-bio"> @Html.Raw(item.Bio) </div>
 </td>
                 <td>
-                    <div class="d-flex">
+                    <div class="content-flex">
                         <a onclick="showInPopup('@Url.Action("AddOrEdit","Authors",new { id = item.Id},Context.Request.Scheme)','Update Author')" class="btn btn-info text-white" style="margin-right: 20px">Edit</a>
                         <form asp-action="Delete" asp-route-id="@item.Id" onsubmit="return jQueryAjaxDelete(this);">
                             <input type="hidden" asp-for="@item.Id" />
