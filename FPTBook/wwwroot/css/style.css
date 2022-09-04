@@ -961,3 +961,7 @@ section {
     text-overflow: ellipsis; 
     margin-top: 10px;
 }
+
+.form-control {
+    margin-top: 11.5px;
+}

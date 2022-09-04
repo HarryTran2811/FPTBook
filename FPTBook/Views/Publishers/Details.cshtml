@@ -1,4 +1,4 @@
-﻿@model FPTBook.Models.Author
+﻿@model FPTBook.Models.Publisher
 
 @{
     ViewData["Title"] = "Details";
@@ -95,7 +95,7 @@
                 </div>
             </div>
             <div class="description text-center">
-                <p>@Html.Raw(Model.Bio)</p>
+                <p>@Html.Raw(Model.Description)</p>
             </div>
             <div>
                 <a asp-action="Index" class="btn btn-primary" id="back-btn">Back to Home</a>

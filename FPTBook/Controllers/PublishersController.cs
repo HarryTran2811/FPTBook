@@ -12,19 +12,19 @@ using Microsoft.AspNetCore.Routing;
 
 namespace FPTBook.Controllers
 {
-    public class AuthorsController : Controller
+    public class PublishersController : Controller
     {
         private readonly AppDbContext _context;
 
-        public AuthorsController(AppDbContext context)
+        public PublishersController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: Authors
+        // GET: Publishers
         public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "FullName")
         {
-            var query = _context.Authors.AsNoTracking()
+            var query = _context.Publishers.AsNoTracking()
                 .OrderBy(p => p.Id)
                 .AsQueryable();
             if (!string.IsNullOrWhiteSpace(filter))
@@ -38,7 +38,7 @@ namespace FPTBook.Controllers
             return View(model);
         }
 
-        // GET: Authors/Details/?id
+        // GET: Publishers/Details/?id
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -46,56 +46,57 @@ namespace FPTBook.Controllers
                 return NotFound();
             }
 
-            var author = await _context.Authors
+            var publisher = await _context.Publishers
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (author == null)
+            if (publisher == null)
             {
                 return NotFound();
             }
 
-            return View(author);
+            return View(publisher);
         }
+
 
         // GET: Authors/Add
         // GET:Authors/Edit/?id
         public async Task<IActionResult> AddOrEdit(int id = 0)
         {
             if (id == 0)
-                return View(new Author());
+                return View(new Publisher());
             else
             {
-                var author = await _context.Authors.FindAsync(id);
-                if (author == null)
+                var publisher = await _context.Publishers.FindAsync(id);
+                if (publisher == null)
                 {
                     return NotFound();
                 }
-                return View(author);
+                return View(publisher);
             }
         }
 
-        // POST: Authors/Add
-        // POST:Authors/Edit/?id
+        // POST: Publishers/Add
+        // POST: Publishers/Edit/?id
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddOrEdit(int id, [Bind("Id,ProfilePictureURL,FullName,Bio")] Author author)
+        public async Task<IActionResult> AddOrEdit(int id, [Bind("Id,ProfilePictureURL,FullName,Description")]Publisher publisher)
         {
             if (ModelState.IsValid)
             {
                 if (id == 0)
                 {
-                    _context.Update(author);
+                    _context.Update(publisher);
                     await _context.SaveChangesAsync();
                 }
                 else
                 {
                     try
                     {
-                        _context.Update(author);
+                        _context.Update(publisher);
                         await _context.SaveChangesAsync();
                     }
                     catch (DbUpdateConcurrencyException)
                     {
-                        if (!AuthorExists(author.Id))
+                        if (!PublisherExists(publisher.Id))
                         {
                             return NotFound();
                         }
@@ -106,25 +107,26 @@ namespace FPTBook.Controllers
                     }
                 }
 
-                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _context.Authors.ToList()) });
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _context.Publishers.ToList()) });
             }
-            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "AddOrEdit", author) });
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "AddOrEdit", publisher) });
         }
 
-        // POST: Authors/Delete/5
+
+        // POST: Publishers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var author = await _context.Authors.FindAsync(id);
-            _context.Authors.Remove(author);
+            var publisher = await _context.Publishers.FindAsync(id);
+            _context.Publishers.Remove(publisher);
             await _context.SaveChangesAsync();
-            return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _context.Authors.ToList()) });
+            return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _context.Publishers.ToList()) });
         }
 
-        private bool AuthorExists(int id)
+        private bool PublisherExists(int id)
         {
-            return _context.Authors.Any(e => e.Id == id);
+            return _context.Publishers.Any(e => e.Id == id);
         }
     }
 }

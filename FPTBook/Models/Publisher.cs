@@ -16,7 +16,7 @@ namespace FPTBook.Models
         [Required(ErrorMessage = "Profile Picture is required")]
         public string ProfilePictureURL { get; set; }
 
-        [Display(Name = "Name")]
+        [Display(Name = "Full Name")]
         [Required(ErrorMessage = "Name is required")]
         [StringLength(100, MinimumLength = 3, ErrorMessage = "Name must be between 3 and 100 characters")]
         public string FullName { get; set; }

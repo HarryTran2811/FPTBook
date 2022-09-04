@@ -1,11 +1,11 @@
-﻿@model ReflectionIT.Mvc.Paging.PagingList<FPTBook.Models.Author>
+﻿@model ReflectionIT.Mvc.Paging.PagingList<FPTBook.Models.Publisher>
 @using ReflectionIT.Mvc.Paging
 
-<h1>Manage author</h1>
-<p>Number of author: @Model.TotalRecordCount</p>
+<h1>Manage publisher</h1>
+<p>Number of publisher: @Model.TotalRecordCount</p>
 <div class="content-flex">
     <p>
-        <a onclick="showInPopup('@Url.Action("AddOrEdit","Authors",null,Context.Request.Scheme)','New Blog')" class="btn btn-success text-white"><i class="fa-solid fa-circle-plus"></i> Create a new author</a>
+        <a onclick="showInPopup('@Url.Action("AddOrEdit","Publishers",null,Context.Request.Scheme)','New Publisher')" class="btn btn-success text-white"><i class="fa-solid fa-circle-plus"></i> Create a new publisher</a>
     </p>
     <form method="get" class="form-inline">
         <input name="filter" class="form-control" placeholder="Search"
@@ -26,7 +26,7 @@
                 @Html.SortableHeaderFor(model => model.FullName, this.Model)
             </th>
             <th>
-                @Html.SortableHeaderFor(model => model.Bio, this.Model)
+                @Html.SortableHeaderFor(model => model.Description, this.Model)
             </th>
             <th></th>
         </tr>
@@ -42,11 +42,11 @@
                     @Html.DisplayFor(modelItem => item.FullName)
                 </td>
                 <td>
-                    <div class ="item-bio"> @Html.Raw(item.Bio) </div>
+                    <div class ="item-bio"> @Html.Raw(item.Description) </div>
 </td>
                 <td>
                     <div class="content-flex">
-                        <a onclick="showInPopup('@Url.Action("AddOrEdit","Authors",new { id = item.Id},Context.Request.Scheme)','Update Author')" class="btn btn-info text-white" style="margin-right: 20px">Edit</a>
+                        <a onclick="showInPopup('@Url.Action("AddOrEdit","Publishers",new { id = item.Id},Context.Request.Scheme)','Update Publisher')" class="btn btn-info text-white" style="margin-right: 20px">Edit</a>
                         <form asp-action="Delete" asp-route-id="@item.Id" onsubmit="return jQueryAjaxDelete(this);">
                             <input type="hidden" asp-for="@item.Id" />
                             <input type="submit" value="Delete" class="btn btn-danger" />
