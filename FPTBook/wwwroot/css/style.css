@@ -965,3 +965,6 @@ section {
 .form-control {
     margin-top: 11.5px;
 }
+.cat-action{
+    display:flex;
+}

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FPTBook.Data;
 using FPTBook.Models;
+using ReflectionIT.Mvc.Paging;
+using Microsoft.AspNetCore.Routing;
 
 namespace FPTBook.Controllers
 {
@@ -20,118 +22,82 @@ namespace FPTBook.Controllers
         }
 
         // GET: Categories
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "Name")
         {
-            return View(await _context.Categories.ToListAsync());
-        }
-
-        // GET: Categories/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
+            var query = _context.Categories.AsNoTracking()
+                .OrderBy(p => p.Id)
+                .AsQueryable();
+            if (!string.IsNullOrWhiteSpace(filter))
             {
-                return NotFound();
+                query = query.Where(p => p.Name.Contains(filter));
             }
-
-            var category = await _context.Categories
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            return View(category);
+            var model = await PagingList.CreateAsync(query, 4, page, sortExpression, "Name");
+            model.RouteValue = new RouteValueDictionary {
+            { "filter", filter}
+            };
+            return View(model);
         }
 
-        // GET: Categories/Create
-        public IActionResult Create()
+        //GET: Categories/ProductCategory
+        public ActionResult BookCategory (int Id)
         {
-            return View();
+            var listProducts = _context.Books.Where(n => n.CategoryId == Id).ToList();
+            return View(listProducts);
         }
 
-        // POST: Categories/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // GET: Authors/Add
+        // GET:Authors/Edit/?id
+        public async Task<IActionResult> AddOrEdit(int id = 0)
+        {
+            if (id == 0)
+                return View(new Category());
+            else
+            {
+                var category = await _context.Categories.FindAsync(id);
+                if (category == null)
+                {
+                    return NotFound();
+                }
+                return View(category);
+            }
+        }
+
+        // POST: Categories/Add
+        // POST:Authors/Edit/?id
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Category category)
+        public async Task<IActionResult> AddOrEdit(int id, [Bind("Id,Name")] Category category)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(category);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(category);
-        }
-
-        // GET: Categories/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-            return View(category);
-        }
-
-        // POST: Categories/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Category category)
-        {
-            if (id != category.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                if (id == 0)
                 {
                     _context.Update(category);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!CategoryExists(category.Id))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(category);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!CategoryExists(category.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
                 }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(category);
-        }
 
-        // GET: Categories/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _context.Authors.ToList()) });
             }
-
-            var category = await _context.Categories
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            return View(category);
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "AddOrEdit", category) });
         }
 
         // POST: Categories/Delete/5
@@ -142,7 +108,7 @@ namespace FPTBook.Controllers
             var category = await _context.Categories.FindAsync(id);
             _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _context.Categories.ToList()) });
         }
 
         private bool CategoryExists(int id)
