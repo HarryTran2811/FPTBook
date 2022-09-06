@@ -40,6 +40,7 @@ namespace FPTBook.Controllers
             ViewBag.AuthorId = new SelectList(movieDropdownsData.Authors, "Id", "FullName");
             return View();
         }
+        //POST: Books/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(NewBookVM book)
@@ -59,6 +60,12 @@ namespace FPTBook.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
+        //GET: Books/Details/?id
+        [AllowAnonymous]
+        public async Task<IActionResult> Details(int id)
+        {
+            var bookDetail = await _service.GetBookByIdAsync(id);
+            return View(bookDetail);
+        }
     }
 }
