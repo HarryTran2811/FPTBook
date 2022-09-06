@@ -1,4 +1,5 @@
 using FPTBook.Data;
+using FPTBook.Data.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -38,6 +39,9 @@ namespace FPTBook
             //Connect SQL server
             services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));
+            //Add VM
+            services.AddScoped<IBooksService, BooksService>();
+            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

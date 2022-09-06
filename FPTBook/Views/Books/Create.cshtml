@@ -1,15 +1,14 @@
-﻿@model FPTBook.Models.Book
+﻿@model FPTBook.Data.ViewModel.NewBookVM
 
 @{
     ViewData["Title"] = "Create";
+    Layout = null;
 }
 
-<h1>Create</h1>
+<h1>Create Book</h1>
 
-<h4>Book</h4>
-<hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -47,25 +46,35 @@
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="CategoryId" class="control-label"></label>
-                <select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.CategoryId"></select>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="PublisherId" class="control-label"></label>
-                <select asp-for="PublisherId" class ="form-control" asp-items="ViewBag.PublisherId"></select>
+                <select asp-for="PublisherId" class="form-control" asp-items="ViewBag.PublisherId"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="AuthorId" class="control-label"></label>
+                <select asp-for="AuthorId" class="form-control" asp-items="ViewBag.AuthorId"></select>
+            </div>
+            <div class="col-md-4 offset-4 text-center">
+                <img width="100%" id="ImageUrlPreview" />
+            </div>
+            <div class="form-group" style=" display: flex; float:right; justify-content: space-between">
+                <input type="submit" value="Create" class="btn btn-success text-white" />
+                <a  class="btn btn-info text-white" asp-action="Index" style="margin-left: 20px;">Show all</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+@section Scripts{
+    <script>
+        $("#ProfilePictureURL").on("change", function () {
+            var output = document.getElementById("ImageUrlPreview");
+            output.src = $(this).val();
+        })
+    </script>
 }
