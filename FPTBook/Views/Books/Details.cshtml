@@ -310,7 +310,7 @@
             <div class="description">
                 <p class="card-text"><b>ISBN: </b>@Model.ISBN</p>
                 <p class="card-text"><b>Category: </b>@Model.Category.Name</p>
-                <span><b>Publisher: </b><a class="card-text" asp-controller="Pulishers" asp-action="Details" asp-route-id="@Model.Publisher.Id">@Model.Publisher.FullName</a></span>
+                <span><b>Publisher: </b><a class="card-text" asp-controller="Publishers" asp-action="Details" asp-route-id="@Model.Publisher.Id">@Model.Publisher.FullName</a></span>
                 <p class="card-text"><b>Number of page: </b>@Model.page_num</p>
                 <p class="card-text"><b>Published date: </b>@Model.publication_date.ToString("dd MMM yy")</p>
             </div>
@@ -333,8 +333,8 @@
                     <div class="col-md-12">
                         <a asp-controller="Orders"
                            asp-action="AddItemToShoppingCart"
-                           asp-route-id="@Model.Id" class="btn btn-danger">Add to cart</a>
-                        <a asp-action="Index" class="btn btn-success"><i class="bi bi-eye-fill"></i>View other books</a>
+                           asp-route-id="@Model.Id" class="btn btn-success"><i style="font-size:12px" class="fa">&#xf07a;</i>  Add to cart</a>
+                        <a asp-action="Index" class="btn btn-primary"><i style="font-size:12px" class="fa">&#xf54e;</i>  View other books</a>
                     </div>
                 </div>
             </div>

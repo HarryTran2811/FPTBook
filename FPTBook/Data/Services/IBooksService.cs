@@ -13,5 +13,7 @@ namespace FPTBook.Data.Services
         Task<NewBookDropdownsVM> GetNewMovieDropdownsValues();
         Task AddNewBookAsync(NewBookVM data);
         Task<Book> GetBookByIdAsync(int id);
+        Task<Book> DeleteBookByIdAsync(int id);
+        Task UpdateBookAsync(NewBookVM data);
     }
 }

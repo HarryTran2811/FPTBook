@@ -282,7 +282,7 @@ body{
 }
 </style>
 <p>
-    <a onclick="showInPopup('@Url.Action("Create","Books",null,Context.Request.Scheme)','New Book')" class="btn btn-success text-white"><i class="fa-solid fa-circle-plus"></i> Create a new book</a>
+    <a onclick="showInPopup('@Url.Action("Create","Books",null,Context.Request.Scheme)','New Book')" class="btn btn-success text-white"><i style="font-size:12px" class="fa">&#xf055;</i>  Create a new book</a>
 </p>
 <div class="row">
     @foreach (var item in Model)
@@ -291,7 +291,7 @@ body{
         <div class="row">
             <div class="col-md-5 col-sm-12 col-xs-12">
                 <div class="product-image">
-                    <img src="@item.ProfilePictureURL" class="img-responsive">
+                    <img src="@item.ProfilePictureURL" class="img-responsive" style="max-width: 400px; max-height: 350px; margin: 0 auto ">
                     <span class="tag2 hot">
                         HOT
                     </span>
@@ -302,8 +302,8 @@ body{
                     <h5 class="name">
                         <a asp-action="Details" asp-route-id="@item.Id">
                             @item.Title
-                        </a>   
-                        <a class="text-white float-right" asp-action="Edit" asp-route-id="@item.Id" style="margin-left: 10px"><i style="font-size:24px" class="fa">&#xf044;</i></a>
+                        </a>
+                        <a onclick="showInPopup('@Url.Action("Edit","Books",new { id = item.Id},Context.Request.Scheme)','Update Book')" class="text-white float-right" style="margin-left: 10px"><i style="font-size:24px" class="fa">&#xf044;</i></a>
                     </h5>
                     <p class="price-container">
                         <span>(@item.Price.ToString("c"))</span>
@@ -321,12 +321,16 @@ body{
                     <div class="row">
                         <div class="col-md-12">
                             <a asp-controller="Orders"
-                                   asp-action="AddItemToShoppingCart"
-                                   asp-route-id="@item.Id" class="btn btn-danger">Add to cart</a>
-                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="bi bi-eye-fill"></i>More info</a>
+                               asp-action="AddItemToShoppingCart"
+                               asp-route-id="@item.Id" class="btn btn-success"><i style="font-size:12px" class="fa">&#xf07a;</i>  Add to cart</a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i style="font-size:12px" class="fa">&#xf06e;</i>  More info</a>
                         </div>
                     </div>
                 </div>
+                <form style="float: right;" asp-action="Delete" asp-route-id="@item.Id" onsubmit="return jQueryAjaxDelete(this);">
+                    <input type="hidden" asp-for="@item.Id" />
+                    <input type="submit" value="Delete Book" class="btn btn-danger" />
+                </form>
             </div>
         </div>
     </div>

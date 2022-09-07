@@ -66,5 +66,48 @@ namespace FPTBook.Data.Services
 
             return movieDetails;
         }
-    }
+
+        public async Task UpdateBookAsync(NewBookVM data)
+        {
+            var dbBook = await _context.Books.FirstOrDefaultAsync(n => n.Id == data.Id);
+
+            if (dbBook != null)
+            {
+                dbBook.Title = data.Title;
+                dbBook.Description = data.Description;
+                dbBook.ISBN = data.ISBN;
+                dbBook.Price = data.Price;
+                dbBook.ProfilePictureURL = data.ProfilePictureURL;
+                dbBook.CategoryId = data.CategoryId;
+                dbBook.page_num = data.page_num;
+                dbBook.publication_date = data.publication_date;
+                dbBook.PublisherId = data.PublisherId;
+                await _context.SaveChangesAsync();
+            }
+
+            //Remove existing actors
+            var existingAuthorsDb = _context.Author_Books.Where(n => n.BookId == data.Id).ToList();
+            _context.Author_Books.RemoveRange(existingAuthorsDb);
+            await _context.SaveChangesAsync();
+
+            //Add Movie Actors
+            foreach (var authorId in data.AuthorId)
+            {
+                var newAuhtorBook = new Author_Book()
+                {
+                    BookId = data.Id,
+                    AuthorId = authorId
+                };
+                await _context.Author_Books.AddAsync(newAuhtorBook);
+            }
+            await _context.SaveChangesAsync();
+        }
+        public async Task<Book> DeleteBookByIdAsync(int id)
+        {
+            var book = await _context.Books.FindAsync(id);
+            _context.Books.Remove(book);
+            await _context.SaveChangesAsync();
+            return book;
+        }
+     }
 }

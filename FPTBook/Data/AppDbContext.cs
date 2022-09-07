@@ -33,5 +33,8 @@ namespace FPTBook.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Publisher> Publishers { get; set; }
 
+        //Orders related tables
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
     }
 }
