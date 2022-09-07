@@ -9,9 +9,11 @@ using FPTBook.Data;
 using FPTBook.Models;
 using ReflectionIT.Mvc.Paging;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FPTBook.Controllers
 {
+    [Authorize]
     public class AuthorsController : Controller
     {
         private readonly AppDbContext _context;
@@ -22,6 +24,7 @@ namespace FPTBook.Controllers
         }
 
         // GET: Authors
+        [AllowAnonymous]
         public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "FullName")
         {
             var query = _context.Authors.AsNoTracking()
@@ -39,6 +42,7 @@ namespace FPTBook.Controllers
         }
 
         // GET: Authors/Details/?id
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

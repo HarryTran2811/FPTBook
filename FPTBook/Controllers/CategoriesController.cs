@@ -9,9 +9,11 @@ using FPTBook.Data;
 using FPTBook.Models;
 using ReflectionIT.Mvc.Paging;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FPTBook.Controllers
 {
+    [Authorize]
     public class CategoriesController : Controller
     {
         private readonly AppDbContext _context;
@@ -22,6 +24,7 @@ namespace FPTBook.Controllers
         }
 
         // GET: Categories
+        [AllowAnonymous]
         public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "Name")
         {
             var query = _context.Categories.AsNoTracking()

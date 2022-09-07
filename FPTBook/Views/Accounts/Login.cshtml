@@ -1,0 +1,33 @@
+﻿@using FPTBook.Data.ViewModel;
+@model LoginVM;
+
+@{
+    ViewData["Title"] = "Log in to your account";
+}
+<!-- login form section starts -->
+
+<section class="login-form">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <form asp-action="Login" class="sign-in-form">
+        <h3>User login</h3>
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                <span><b>Sorry!</b> - @TempData["Error"] </span>
+            </div>
+        }
+        <div class="inputBox">
+            <span class="fas fa-user"></span>
+            <input asp-for="EmailAddress" type="text" placeholder="Username"  required />
+        </div>
+        <div class="inputBox">
+            <span class="fas fa-lock"></span>
+            <input asp-for="Password" type="password" placeholder="Password"  required />
+        </div>
+        <input type="submit" value="Sign in" class="btn btn-success">
+        <a asp-controller="Accounts" asp-action="Register" class="btn btn-info">create an account</a>
+    </form>
+
+</section>
+
+<!-- login form section ends -->

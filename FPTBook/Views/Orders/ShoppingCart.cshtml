@@ -1,0 +1,82 @@
+﻿@using FPTBook.Data.ViewModel;
+@model ShoppingCartVM
+
+@{
+    ViewData["Title"] = "Shopping cart summary";
+}
+
+<div class="row">
+    <div class="col-md-12 offset-2">
+        <div class="text-center">
+            <h2>You shopping cart summary</h2>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Selected quantity</th>
+                    <th>Book</th>
+                    <th>Price</th>
+                    <th>Subtotal</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ShoppingCart.ShoppingCartItems)
+                {
+                    <tr>
+                        <td class="align-middle">@item.Quantity</td>
+                        <td class="align-middle">@item.Book.Title</td>
+                        <td class="align-middle">@item.Book.Price.ToString("c")</td>
+                        <td class="align-middle">@((item.Quantity*item.Book.Price).ToString("c"))</td>
+                        <td class="align-middle">
+                            <a class="text-danger" asp-controller="Orders" asp-action="RemoveItemFromShoppingCart"
+                               asp-route-id="@item.Book.Id">
+                                <i style="font-size:20px" class="fa">&#xf218;</i>
+                            </a>
+                            |
+                            <a class="text-success" asp-controller="Orders" asp-action="AddItemToShoppingCart"
+                               asp-route-id="@item.Book.Id">
+                                <i style="font-size:20px" class="fa">&#xf217;</i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2"></td>
+                    <td><b>Total:</b></td>
+                    <td>
+                        @Model.ShoppingCartTotal.ToString("c")
+                    </td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="text-right">
+            <div class="btn-group">
+                @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
+                {
+                    <a class="btn btn-success" asp-action="CompleteOrder">
+                        Complete order
+                    </a>
+                }
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <a class="btn btn-warning" asp-controller="Accounts" asp-action="Login">
+                        Login to order
+                    </a>
+                }
+                <span style="padding:5px"></span>
+                <a class="btn btn-info" asp-controller="Books" asp-action="Index">
+                    <i style="font-size:12px" class="fa">&#xf055;</i>
+                    Add more items
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+

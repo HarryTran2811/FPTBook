@@ -9,9 +9,11 @@ using FPTBook.Data;
 using FPTBook.Models;
 using ReflectionIT.Mvc.Paging;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FPTBook.Controllers
 {
+    [Authorize]
     public class PublishersController : Controller
     {
         private readonly AppDbContext _context;
@@ -21,6 +23,7 @@ namespace FPTBook.Controllers
             _context = context;
         }
 
+        [AllowAnonymous]
         // GET: Publishers
         public async Task<IActionResult> Index(string filter, int page = 1, string sortExpression = "FullName")
         {
@@ -37,7 +40,7 @@ namespace FPTBook.Controllers
             };
             return View(model);
         }
-
+        [AllowAnonymous]
         // GET: Publishers/Details/?id
         public async Task<IActionResult> Details(int? id)
         {

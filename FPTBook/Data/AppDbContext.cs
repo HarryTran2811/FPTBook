@@ -1,4 +1,5 @@
 ﻿using FPTBook.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FPTBook.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -25,6 +26,15 @@ namespace FPTBook.Data
             modelBuilder.Entity<Author_Book>().HasOne(m => m.Author).WithMany(am => am.Author_Books).HasForeignKey(m => m.AuthorId);
 
             base.OnModelCreating(modelBuilder);
+            // Delete AspNet Prefixes of identity tables: Default
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                var tableName = entityType.GetTableName();
+                if (tableName.StartsWith("AspNet"))
+                {
+                    entityType.SetTableName(tableName.Substring(6));
+                }
+            }
         }
 
         public DbSet<Author> Authors { get; set; }
@@ -36,5 +46,6 @@ namespace FPTBook.Data
         //Orders related tables
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
     }
 }

@@ -13,6 +13,7 @@ using FPTBook.Data.ViewModel;
 
 namespace FPTBook.Controllers
 {
+    [Authorize]
     public class BooksController : Controller
     {
         private readonly IBooksService _service;
@@ -114,6 +115,7 @@ namespace FPTBook.Controllers
             await _service.UpdateBookAsync(book);
             return RedirectToAction(nameof(Index));
         }
+        //POST: Books/Delete/?id
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -122,6 +124,23 @@ namespace FPTBook.Controllers
             if (bookDetail == null) return View("NotFound");
             else await _service.DeleteBookByIdAsync(id);
             return RedirectToAction(nameof(Index));
+        }
+        //POST: Books/Filter/?filterString
+        [AllowAnonymous]
+        public async Task<IActionResult> Filter(string searchString)
+        {
+            var allBooks = await _service.GetAllAsync(n => n.Publisher, m => m.Category);
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                var filteredResult = allBooks.Where(n => n.Title.ToLower().Contains(searchString.ToLower()) || n.Description.ToLower().Contains(searchString.ToLower())).ToList();
+
+                //var filteredResultNew = allBooks.Where(n => string.Equals(n.Title, searchString, StringComparison.CurrentCultureIgnoreCase) || string.Equals(n.Description, searchString, StringComparison.CurrentCultureIgnoreCase)).ToList();
+
+                return View("Index", filteredResult);
+            }
+
+            return View("Index", allBooks);
         }
     }
 }

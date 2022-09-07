@@ -1,0 +1,41 @@
+﻿@using FPTBook.Data.ViewModel;
+@model RegisterVM;
+
+@{
+    ViewData["Title"] = "Log in to your account";
+}
+<!-- register form section starts -->
+
+<section class="register-form">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <form asp-action="Register">
+        <h3>Register now</h3>
+        @if (TempData["Error"] != null)
+        {
+        <div class="alert alert-danger" role="alert">
+            <span><b>Sorry!</b> - @TempData["Error"] </span>
+        </div>
+        }
+        <div class="inputBox">
+            <span class="fas fa-user"></span>
+            <input asp-for="FullName" type="text" placeholder="UserName" required />
+        </div>
+        <div class="inputBox">
+            <span class="fas fa-envelope"></span>
+            <input asp-for="EmailAddress" type="text" placeholder="EmailAddress" required />
+        </div>
+        <div class="inputBox">
+            <span class="fas fa-lock"></span>
+            <input asp-for="Password" type="password" placeholder="Password" required />
+        </div>
+        <div class="inputBox">
+            <span class="fas fa-lock"></span>
+            <input asp-for="ConfirmPassword" type="password" placeholder="Password" required />
+        </div>
+        <input type="submit" value="Sign up" class="btn btn-success">
+        <a asp-controller="Accounts" asp-action="Login" class="btn btn-info">Already have an account</a>
+    </form>
+
+</section>
+
+<!-- register form section ends -->
