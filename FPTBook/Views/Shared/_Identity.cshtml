@@ -21,7 +21,14 @@ else
                 aria-expanded="false">
             <i class="bi bi-person-badge"></i> Hello @UserManager.GetUserName(User)
         </button>
+
         <ul class="dropdown-menu" aria-labelledby="profile-btn">
+            <li>
+                <a class="dropdown-item" asp-controller="Orders" asp-action="Index">
+                    <i style="font-size:12px" class="fa">&#xf406;</i> Orders
+                </a>
+            </li>
+
             @if (User.IsInRole("Admin"))
             {
                 <li>

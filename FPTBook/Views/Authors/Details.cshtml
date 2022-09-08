@@ -45,7 +45,8 @@
     #back-btn {
         display: flex;
         justify-content: center;
-        margin-bottom: 2rem;
+        margin: 20px;
+        max-width: 100rem
     }
 
     .img-fluid, .img-thumbnail {
@@ -83,7 +84,7 @@
     <div class="profile-content">
         <div class="container">
             <div class="row">
-                <div class="col-md-6 ml-auto mr-auto">
+                <div class="col-md-11 ml-auto mr-auto">
                     <div class="profile">
                         <div class="avatar">
                             <img src="@Model.ProfilePictureURL" alt="@Model.FullName" class="img-raised rounded-circle img-fluid">
@@ -94,11 +95,11 @@
                     </div>
                 </div>
             </div>
-            <div class="description text-center">
+            <div class="description text-center" style=" margin: 20px; max-width:100rem">
                 <p>@Html.Raw(Model.Bio)</p>
             </div>
             <div>
-                <a asp-action="Index" class="btn btn-primary" id="back-btn">Back to Home</a>
+                <a  href="javascript: history.go(-1)" class="btn btn-primary" id="back-btn">Back to Home</a>
             </div>
         </div>
     </div>
