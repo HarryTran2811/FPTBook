@@ -3,7 +3,7 @@ Introduction of ATN solution
 
 + An FPT book system application built with CRUD functionality, and REST architechture.
 + Source code on Github: https://github.com/HarryTran2811/FPTBook
-+ Tech Stack : ASP.NET Core MVC5 - SOL Server
++ Tech Stack : ASP.NET Core MVC 5 - SOL Server
 
 # Features:
 + Both Local login and Google sign in Authentication
