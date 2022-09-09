@@ -1,24 +1,24 @@
 # FPTBook
 Introduction of ATN solution
 
-An FPT book system application built with CRUD functionality, and REST architechture.
-Source code on Github: https://github.com/HarryTran2811/FPTBook
-Tech Stack : ASP.NET Core MVC5 - SOL Server
++ An FPT book system application built with CRUD functionality, and REST architechture.
++ Source code on Github: https://github.com/HarryTran2811/FPTBook
++ Tech Stack : ASP.NET Core MVC5 - SOL Server
 
 #Features:
-Both Local login and Google sign in Authentication
-Uploading of File type Image as any format.
++ Both Local login and Google sign in Authentication
++ Uploading of File type Image as any format.
 
 #Functionalities Products:
-Add a new Book/Author/Category/Publisher
-Edit an existing Book/Author/Category/Publisher
-Delete an Existing Product/Author/Category/Publisher 
++ Add a new Book/Author/Category/Publisher
++ Edit an existing Book/Author/Category/Publisher
++ Delete an Existing Product/Author/Category/Publisher 
 
 #User :
-+Register/Login/LogOut as an user
-+Add a item to cart / view carts Page
-+Place an Order and make payment with success / failure.
-+View Orders placed by the user. 
++ Register/Login/LogOut as an user
++ Add a item to cart / view carts Page
++ Place an Order and make payment with success / failure.
++ View Orders placed by the user. 
 #Admin: 
 + Access the Admin panel to get control over Catalogs, Products, Orders and User. 
 + View, Update or Delete all products/catalogs 
