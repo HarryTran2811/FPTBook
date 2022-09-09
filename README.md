@@ -1,5 +1,5 @@
 # FPTBook
-Introduction of ATN solution
+Introduction of FPT Book Management system
 
 + An FPT book system application built with CRUD functionality, and REST architechture.
 + Source code on Github: https://github.com/HarryTran2811/FPTBook
@@ -8,6 +8,9 @@ Introduction of ATN solution
 # Features:
 + Both Local login and Google sign in Authentication
 + Uploading of File type Image as any format.
+
+# Screenshot:
+![image](https://user-images.githubusercontent.com/105436645/189360123-8caf7e52-e31b-4fdc-a60e-097f7e5d090e.png)
 
 # Functionalities Products:
 + Add a new Book/Author/Category/Publisher
