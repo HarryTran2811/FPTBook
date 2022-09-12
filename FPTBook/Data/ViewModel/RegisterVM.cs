@@ -7,18 +7,24 @@ using System.Threading.Tasks;
 
 namespace FPTBook.Data.ViewModel
 {
-    public class NewBookDropdownsVM
+    public class RegisterVM
     {
-        public NewBookDropdownsVM()
-        {
-            Publishers = new List<Publisher>();
-            Categories = new List<Category>();
-            Authors = new List<Author>();
-        }
+        [Display(Name = "Full name")]
+        [Required(ErrorMessage = "Full name is required")]
+        public string FullName { get; set; }
 
-        public List<Publisher> Publishers { get; set; }
-        public List<Category> Categories { get; set; }
-        public List<Author> Authors { get; set; }
+        [Display(Name = "Email address")]
+        [Required(ErrorMessage = "Email address is required")]
+        public string EmailAddress { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+
+        [Display(Name = "Confirm password")]
+        [Required(ErrorMessage = "Confirm password is required")]
+        [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage = "Passwords do not match")]
+        public string ConfirmPassword { get; set; }
     }
-
 }
