@@ -10,7 +10,7 @@ namespace FPTBook.Data.Services
 {
     public interface IBooksService : IEntityBaseRepository<Book>
     {
-        Task<NewBookDropdownsVM> GetNewMovieDropdownsValues();
+        Task<NewBookDropdownsVM> GetNewBookDropdownsValues();
         Task AddNewBookAsync(NewBookVM data);
         Task<Book> GetBookByIdAsync(int id);
         Task<Book> DeleteBookByIdAsync(int id);

@@ -16,7 +16,7 @@ namespace FPTBook.Data.Services
         {
             _context = context;
         }
-        public async Task<NewBookDropdownsVM> GetNewMovieDropdownsValues()
+        public async Task<NewBookDropdownsVM> GetNewBookDropdownsValues()
         {
             var response = new NewBookDropdownsVM()
             {

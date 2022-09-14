@@ -8,6 +8,7 @@
         margin-top: 20px;
         background: #eee;
     }
+
     #picture-author {
         max-width: 100px;
         min-height: 100px;
@@ -15,6 +16,7 @@
         min-width: 100px;
         border-radius: 50%;
     }
+
     .prod-info-main {
         border: 1px solid #CEEFFF;
         margin-bottom: 20px;
@@ -288,7 +290,9 @@
     <div class="row">
         <div class="col-md-5 col-sm-12 col-xs-12">
             <div class="product-image">
-                <img src="@Model.ProfilePictureURL" class="img-responsive">
+                <div id="img-container">
+                    <img src="@Model.ProfilePictureURL" alt="Image To Zoom" class="img-responsive">
+                </div>
                 <span class="tag2 hot">
                     HOT
                 </span>
@@ -320,7 +324,7 @@
                     @foreach (var author in Model.Author_Books)
                     {
                         <div class="column text-center">
-                            <img class="img-responsive" src="@author.Author.ProfilePictureURL" id="picture-author"/>
+                            <img class="img-responsive" src="@author.Author.ProfilePictureURL" id="picture-author" />
                             <br />
                             <a asp-controller="Authors" asp-action="Details" asp-route-id="@author.AuthorId">@author.Author.FullName</a>
                         </div>
@@ -344,4 +348,10 @@
         </div>
     </div>
 </div>
-
+<script>
+    var options = {
+        width: 400, // required
+        // more options here
+    };
+    new ImageZoom(document.getElementById("img-container"), options);
+</script>

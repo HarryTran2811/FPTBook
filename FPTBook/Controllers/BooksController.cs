@@ -34,7 +34,7 @@ namespace FPTBook.Controllers
         //GET: Books/Create
         public async Task<IActionResult> Create()
         {
-            var bookDropdownsData = await _service.GetNewMovieDropdownsValues();
+            var bookDropdownsData = await _service.GetNewBookDropdownsValues();
 
             ViewBag.CategoryId = new SelectList(bookDropdownsData.Categories, "Id", "Name");
             ViewBag.PublisherId = new SelectList(bookDropdownsData.Publishers, "Id", "FullName");
@@ -48,7 +48,7 @@ namespace FPTBook.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var bookDropdownsData = await _service.GetNewMovieDropdownsValues();
+                var bookDropdownsData = await _service.GetNewBookDropdownsValues();
 
                 ViewBag.CategoryId = new SelectList(bookDropdownsData.Categories, "Id", "Name");
                 ViewBag.PublisherId = new SelectList(bookDropdownsData.Publishers, "Id", "FullName");
@@ -88,7 +88,7 @@ namespace FPTBook.Controllers
 
             };
 
-            var bookDropdownsData = await _service.GetNewMovieDropdownsValues();
+            var bookDropdownsData = await _service.GetNewBookDropdownsValues();
             ViewBag.CategoryId = new SelectList(bookDropdownsData.Categories, "Id", "Name");
             ViewBag.PublisherId = new SelectList(bookDropdownsData.Publishers, "Id", "FullName");
             ViewBag.AuthorId = new SelectList(bookDropdownsData.Authors, "Id", "FullName");
@@ -104,7 +104,7 @@ namespace FPTBook.Controllers
 
             if (!ModelState.IsValid)
             {
-                var bookDropdownsData = await _service.GetNewMovieDropdownsValues();
+                var bookDropdownsData = await _service.GetNewBookDropdownsValues();
                 ViewBag.CategoryId = new SelectList(bookDropdownsData.Categories, "Id", "Name");
                 ViewBag.PublisherId = new SelectList(bookDropdownsData.Publishers, "Id", "FullName");
                 ViewBag.AuthorId = new SelectList(bookDropdownsData.Authors, "Id", "FullName");
