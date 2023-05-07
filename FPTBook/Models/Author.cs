@@ -21,12 +21,12 @@ namespace FPTBook.Models
         [StringLength(100, MinimumLength = 3, ErrorMessage = "Full Name must be between 3 and 100 chars")]
         public string FullName { get; set; }
 
-        [Column(TypeName = "nvarchar(MAX)")]
+        [Column(TypeName = "text")] 
         [Display(Name = "Biography")]
         [Required(ErrorMessage = "Biography is required")]
         public string Bio { get; set; }
 
-        //Relationships
+        // Relationships
         public List<Author_Book> Author_Books { get; set; }
     }
 }

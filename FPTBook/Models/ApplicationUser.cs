@@ -11,15 +11,15 @@ namespace FPTBook.Models
 
     public class ApplicationUser : IdentityUser
     {
-        [Column(TypeName = "nvarchar")]
+        [Column(TypeName = "text")]
         [Display(Name = "Full name")]
         [MaxLength(100)]
         public string FullName { set; get; }
 
-        [Column(TypeName = "nvarchar")]
+        [Column(TypeName = "text")]
         [Display(Name = "Address")]
         [MaxLength(255)]
-        public string Address { set; get; }
+        public string? Address { set; get; }
 
         [DataType(DataType.Date)]
         public DateTime? Birthday { set; get; }

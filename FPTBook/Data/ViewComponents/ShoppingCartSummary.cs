@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace eTickets.Data.ViewComponents
+namespace FPTBook.Data.ViewComponents
 {
-    public class ShoppingCartSummary:ViewComponent
+    public class ShoppingCartSummary : ViewComponent
     {
         private readonly ShoppingCart _shoppingCart;
         public ShoppingCartSummary(ShoppingCart shoppingCart)

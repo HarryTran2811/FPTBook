@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -37,14 +36,15 @@ namespace FPTBook
             // Add framework services.
             services.AddMvc();
             services.AddPaging(
-                options => {
+                options =>
+                {
                     options.ViewName = "Bootstrap4";
                     options.PageParameterName = "page";
                 }
                 );
             //Connect SQL server
-            services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));
+            services.AddDbContext<AppDbContext>(opt =>
+            opt.UseNpgsql(Configuration.GetConnectionString("DevConnection")));
 
             // Configure Identity for app
             services.AddIdentity<ApplicationUser, IdentityRole>()
