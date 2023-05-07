@@ -27,7 +27,7 @@ namespace FPTBook.Models
         [StringLength(100, MinimumLength = 3, ErrorMessage = "Title must be between 3 and 100 chars")]
         public string Title { get; set; }
 
-        [Column(TypeName = "nvarchar(MAX)")]
+        [Column(TypeName = "text")]
         [Display(Name = "Description")]
         [Required(ErrorMessage = "Description is required")]
         public string Description { get; set; }
@@ -46,12 +46,12 @@ namespace FPTBook.Models
 
         //Relationships
         public List<Author_Book> Author_Books { get; set; }
-        //Cinema
+        //Category
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
 
-        //Producer
+        //Publisher
         public int PublisherId { get; set; }
         [ForeignKey("PublisherId")]
         public Publisher Publisher { get; set; }

@@ -42,8 +42,8 @@
                     @Html.DisplayFor(modelItem => item.FullName)
                 </td>
                 <td>
-                    <div class ="item-bio"> @Html.Raw(item.Bio) </div>
-</td>
+                    <div class="item-bio"> @Html.Raw(item.Bio) </div>
+                </td>
                 <td>
                     <div class="content-flex">
                         <a onclick="showInPopup('@Url.Action("AddOrEdit","Authors",new { id = item.Id},Context.Request.Scheme)','Update Author')" class="btn btn-info text-white" style="margin-right: 20px">Edit</a>
@@ -57,6 +57,10 @@
         }
     </tbody>
 </table>
-<nav aria-label="Blog Paging">
-    @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
-</nav>
+<div class="center">
+    <div class="pagination">
+        <nav aria-label="Blog Paging">
+            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
+        </nav>
+    </div>
+</div>

@@ -31,7 +31,6 @@
 
         <nav class="navbar" style="display:flex;">
             <ul>
-                <li><a asp-controller="Books" asp-action="Index">Home</a></li>
                 @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                 {
                     <li>

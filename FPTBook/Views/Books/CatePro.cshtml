@@ -1,5 +1,4 @@
-﻿@model ReflectionIT.Mvc.Paging.PagingList<FPTBook.Models.Book>
-@using ReflectionIT.Mvc.Paging
+﻿@model IEnumerable<FPTBook.Models.Book>
 
 @{
     ViewData["Title"] = "List of Books";
@@ -277,52 +276,6 @@
     .product-deatil .message-text {
         width: calc(100% - 70px)
     }
-  /*Filter CSS*/
-button.btn-light {
-    background-color: #f5f5f5 !important;
-    border: 1px solid #ddd !important;
-}
-
-.dropdown-menu .dropdown-item {
-    font-size: 14px !important;
-    color: #333 !important;
-}
-
-.dropdown-menu .dropdown-item:hover {
-    background-color: #f5f5f5 !important;
-}
-
-.dropdown-menu-right {
-    margin-top: 10px !important;
-}
-
-button.btn-light:hover {
-    background-color: #eee !important;
-    border-color: #ccc !important;
-}
-
-.dropdown-toggle::after {
-    display: inline-block !important;
-    margin-left: .255em !important;
-    vertical-align: .255em !important;
-    content: "" !important;
-    border-top: .3em solid !important;
-    border-right: .3em solid transparent !important;
-    border-bottom: 0 !important;
-    border-left: .3em solid transparent !important;
-}
-
-.dropdown-menu .dropdown-item {
-    font-size: 16px !important;
-    font-weight: bold !important;
-    color: #444 !important;
-    background-color: #f9f9f9 !important;
-    text-decoration: none !important;
-}
-
-.dropdown-menu .dropdown-item:hover {
-    background-color: #eee !important;
-}
 </style>
 @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
 {
@@ -355,82 +308,58 @@ button.btn-light:hover {
         </div>
     </div>
     <div class="col-lg-9" id="products">
-        <!-- Filter -->
-        <div class="dropdown ml-4" style="position: relative; float: right; margin-top: 10px;">
-            <button class="btn-light dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false">
-                Sort by
-                <span class="dropdown-toggle__icon"></span>
-            </button>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
-                <a class="dropdown-item" href="#">@Html.SortableHeaderFor(model => model.Title, this.Model)</a>
-                <a class="dropdown-item" href="#">@Html.SortableHeaderFor(model => model.Price, this.Model)</a>
-                <a class="dropdown-item" href="#">@Html.SortableHeaderFor(model => model.publication_date, this.Model)</a>
-            </div>
-        </div>
-        <!-- End Filter -->
-        <div>
-            @foreach (var item in Model)
-            {
-                <div class="prod-info-main prod-wrap clearfix" style="margin-top: 50px">
-                    <div class="row">
-                        <div class="col-md-5 col-sm-12 col-xs-12">
-                            <div class="product-image">
-                                <img src="@item.ProfilePictureURL" class="img-responsive" style="max-width: 400px; max-height: 350px; margin: 0 auto ">
-                                <span class="tag2 hot">
-                                    HOT
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col-md-7 col-sm-12 col-xs-12">
-                            <div class="product-deatil">
-                                <h5 class="name">
-                                    <a asp-action="Details" asp-route-id="@item.Id">
-                                        @item.Title
-                                    </a>
-                                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                                    {
-                                        <a onclick="showInPopup('@Url.Action("Edit", "Books", new { id = item.Id }, Context.Request.Scheme)','Update Book')" class="text-white float-right" style="margin-left: 10px"><i style="font-size:24px" class="fa">&#xf044;</i></a>}
-                                </h5>
-                                <p class="price-container">
-                                    <span>(@item.Price.ToString("c"))</span>
-                                </p>
-                                <span class="tag1"></span>
-                            </div>
-                            <div class="description">
-                                <p class="card-text"><b>ISBN: </b>@item.ISBN</p>
-                                <p class="card-text"><b>Number of page: </b>@item.page_num</p>
-                                <p class="card-text"><b>Published date: </b>@item.publication_date.ToString("dd MMM yy")</p>
-                            </div>
-                            <div class="product-info smart-form">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <a asp-controller="Orders"
-                                           asp-action="AddItemToShoppingCart"
-                                           asp-route-id="@item.Id" class="btn btn-success"><i style="font-size:12px;" class="fa">&#xf07a;</i>  Add to cart</a>
-                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i style="font-size:12px" class="fa">&#xf06e;</i>  More info</a>
-                                    </div>
-                                </div>
-                            </div>
-                            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                            {
-                                <form style="float: right;" asp-action="Delete" asp-route-id="@item.Id" onsubmit="return jQueryAjaxDelete(this);">
-                                    <input type="hidden" asp-for="@item.Id" />
-                                    <input type="submit" value="Delete Book" class="btn btn-danger" />
-                                </form>
-                            }
+        @foreach (var item in Model)
+        {
+            <div class="prod-info-main prod-wrap clearfix">
+                <div class="row">
+                    <div class="col-md-5 col-sm-12 col-xs-12">
+                        <div class="product-image">
+                            <img src="@item.ProfilePictureURL" class="img-responsive" style="max-width: 400px; max-height: 350px; margin: 0 auto ">
+                            <span class="tag2 hot">
+                                HOT
+                            </span>
                         </div>
                     </div>
-                </div>
-            }
-            <div class="center">
-                <div class="pagination">
-                    <nav aria-label="Blog Paging">
-                        @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
-                    </nav>
+                    <div class="col-md-7 col-sm-12 col-xs-12">
+                        <div class="product-deatil">
+                            <h5 class="name">
+                                <a asp-action="Details" asp-route-id="@item.Id">
+                                    @item.Title
+                                </a>
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                                {
+                                    <a onclick="showInPopup('@Url.Action("Edit", "Books", new { id = item.Id }, Context.Request.Scheme)','Update Book')" class="text-white float-right" style="margin-left: 10px"><i style="font-size:24px" class="fa">&#xf044;</i></a>}
+                            </h5>
+                            <p class="price-container">
+                                <span>(@item.Price.ToString("c"))</span>
+                            </p>
+                            <span class="tag1"></span>
+                        </div>
+                        <div class="description">
+                            <p class="card-text"><b>ISBN: </b>@item.ISBN</p>
+                            <p class="card-text"><b>Number of page: </b>@item.page_num</p>
+                            <p class="card-text"><b>Published date: </b>@item.publication_date.ToString("dd MMM yy")</p>
+                        </div>
+                        <div class="product-info smart-form">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <a asp-controller="Orders"
+                                       asp-action="AddItemToShoppingCart"
+                                       asp-route-id="@item.Id" class="btn btn-success"><i style="font-size:12px;" class="fa">&#xf07a;</i>  Add to cart</a>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i style="font-size:12px" class="fa">&#xf06e;</i>  More info</a>
+                                </div>
+                            </div>
+                        </div>
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <form style="float: right;" asp-action="Delete" asp-route-id="@item.Id" onsubmit="return jQueryAjaxDelete(this);">
+                                <input type="hidden" asp-for="@item.Id" />
+                                <input type="submit" value="Delete Book" class="btn btn-danger" />
+                            </form>
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
+        }
     </div>
 </div>
-

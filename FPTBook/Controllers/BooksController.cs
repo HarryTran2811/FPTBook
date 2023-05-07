@@ -10,6 +10,7 @@ using FPTBook.Models;
 using FPTBook.Data.Services;
 using Microsoft.AspNetCore.Authorization;
 using FPTBook.Data.ViewModel;
+using ReflectionIT.Mvc.Paging;
 
 namespace FPTBook.Controllers
 {
@@ -17,18 +18,27 @@ namespace FPTBook.Controllers
     public class BooksController : Controller
     {
         private readonly IBooksService _service;
-
-        public BooksController(IBooksService service)
+        private readonly AppDbContext _context;
+        public BooksController(IBooksService service, AppDbContext context)
         {
             _service = service;
+            _context = context;
         }
 
         [AllowAnonymous]
         //GET: Books/Index
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1, string sortExpression = "Title")
         {
-            var allBooks = await _service.GetAllAsync(n => n.Publisher,m=> m.Category);
-            return View(allBooks);
+            var lsCategories = _context.Categories
+         .AsNoTracking()
+         .ToList();
+            ViewData["Categories"] = lsCategories;
+
+            var query = _context.Books.AsNoTracking()
+                .OrderBy(p => p.Id)
+                .AsQueryable();
+            var model = await PagingList.CreateAsync(query, 4, page, sortExpression, "Title");
+            return View(model);
         }
 
         //GET: Books/Create
@@ -124,6 +134,34 @@ namespace FPTBook.Controllers
             if (bookDetail == null) return View("NotFound");
             else await _service.DeleteBookByIdAsync(id);
             return RedirectToAction(nameof(Index));
+        }
+        [AllowAnonymous]
+        //GET: Books/CatePro
+        public async Task<IActionResult> CatePro()
+        {
+            var allBooks = await _service.GetAllAsync(n => n.Publisher, m => m.Category);
+            var lsCategories = _context.Categories
+      .AsNoTracking()
+      .ToList();
+            ViewData["Categories"] = lsCategories;
+            return View(allBooks);
+        }
+
+        //POST: Books/BookCategory/?CategoryString
+        [AllowAnonymous]
+        public async Task<IActionResult> BookCategory(int id)
+        {
+            var allBooks = await _service.GetAllAsync(n => n.Publisher, m => m.Category);
+            var lsCategories = _context.Categories
+       .AsNoTracking()
+       .ToList();
+            ViewData["Categories"] = lsCategories;
+
+            var Result = allBooks.Where(n => n.CategoryId == id);
+
+            //var filteredResultNew = allBooks.Where(n => string.Equals(n.Title, searchString, StringComparison.CurrentCultureIgnoreCase) || string.Equals(n.Description, searchString, StringComparison.CurrentCultureIgnoreCase)).ToList();
+
+            return View("CatePro", Result);
         }
         //POST: Books/Filter/?filterString
         [AllowAnonymous]
